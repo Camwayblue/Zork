@@ -17,10 +17,12 @@ namespace Zork
                 string outputString;
                 switch (command)
                 {
-                    case 
+                    case Commands.QUIT:
+                        Console.WriteLine("One");
+                        break;
                 }
             }
-            Console.WriteLine(outputString);
+       
 
         }
         private static Commands ToCommand(string commandString) => Enum.TryParse(commandString, true, out Commands result) ? result : Commands.UNKNOWN;
