@@ -18,7 +18,25 @@ namespace Zork
                 switch (command)
                 {
                     case Commands.QUIT:
-                        Console.WriteLine("One");
+                        Console.WriteLine("Thank you for playing!");
+                        break;
+                    case Commands.LOOK:
+                        Console.WriteLine("This is an open field west of a white house, with a boarded front door.");
+                        break;
+                    case Commands.NORTH:
+                        Console.WriteLine("You moved North");
+                        break;
+                    case Commands.SOUTH:
+                        Console.WriteLine("You moved SOUTH");
+                        break;
+                    case Commands.EAST:
+                        Console.WriteLine("You moved EAST");
+                        break;
+                    case Commands.WEST:
+                        Console.WriteLine("You moved WEST");
+                        break;
+                    case Commands.INVALID:
+                        Console.WriteLine("Unkown command");
                         break;
                 }
             }
