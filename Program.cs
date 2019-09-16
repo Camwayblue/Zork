@@ -35,10 +35,12 @@ namespace Zork
                     case Commands.WEST:
                         Console.WriteLine("You moved WEST");
                         break;
-                    case Commands.INVALID:
+                    case Commands.UNKNOWN:
                         Console.WriteLine("Unkown command");
                         break;
                 }
+
+                Console.WriteLine(outputString);
             }
        
 
