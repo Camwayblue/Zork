@@ -7,6 +7,7 @@ namespace Zork
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Zork!");
+            Console.ReadKey();
 
             Commands command = Commands.UNKNOWN;
             while (command != Commands.QUIT)
@@ -24,27 +25,35 @@ namespace Zork
                         Console.WriteLine("This is an open field west of a white house, with a boarded front door.");
                         break;
                     case Commands.NORTH:
-                        Console.WriteLine("You moved North");
-                        break;
+                 
                     case Commands.SOUTH:
-                        Console.WriteLine("You moved SOUTH");
-                        break;
+
                     case Commands.EAST:
-                        Console.WriteLine("You moved EAST");
-                        break;
+
                     case Commands.WEST:
-                        Console.WriteLine("You moved WEST");
+                        if (Move(command) == false)
+                        {
+                            Console.WriteLine("The way is shut!");
+                        }
                         break;
-                    case Commands.UNKNOWN:
+
+                    default:
                         Console.WriteLine("Unkown command");
                         break;
                 }
 
-                Console.WriteLine(outputString);
+             //   Console.WriteLine(outputString);
             }
-       
+
 
         }
-        private static Commands ToCommand(string commandString) => Enum.TryParse(commandString, true, out Commands result) ? result : Commands.UNKNOWN;
+        private static Commands ToCommand(string commandString) => (Enum.TryParse(commandString, true, out Commands result) ? result : Commands.UNKNOWN);
+
+        
+
+        
+            private static readonly string[,] Rooms = { "Forest", "West of House", "Behind House", "Clearing", "Canyon View" };
+           
+        
     }
 }
