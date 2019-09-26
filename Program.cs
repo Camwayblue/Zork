@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Zork
 {
@@ -9,43 +13,53 @@ namespace Zork
             Commands result;
             return Enum.TryParse(commandstring, true, out result) ? result : Commands.UNKNOWN;
         }
-
+      
         private static Commands move(string commandstring)
         {
             Commands result;
             return Enum.TryParse(commandstring, true, out result) ? result == Commands.EAST ? result : result == Commands.WEST ? result : Commands.UNKNOWN : Commands.UNKNOWN;
         }
 
-        private static string[] Rooms = { "Forest", "West of House", "Behind of House", "Clearing", "Canyon View" };
+        //private static string[] Rooms =  {"Forest","West of House","Behind of House", "Clearing", "Canyon View"};
+        private static readonly string[,] Rooms = {
+                                                      {"Rocky Trail","South of House","Canyon View"},
+                                                      {"Forest","West of House","Behind House"},
+                                                      {"Dense Woods","North of House","Clearing"},
+                                                  };
+        private static class Location
+        {
+            public static int Row = 1;
+            public static int Column = 1;
+        }
+
         static void Main(string[] args)
         {
-            int CurrentRoom = 1;
             Console.WriteLine("Welcome to Zork!");
-            Console.WriteLine("Player Spawned in Room : {0}", Rooms[CurrentRoom]);
+            Console.WriteLine("Player Spawned in Room : {0}", Rooms[Location.Row, Location.Column]);
             Commands command = Commands.UNKNOWN;
             while (command != Commands.QUIT)
             {
-                Console.WriteLine("Current Room : {0}", Rooms[CurrentRoom]);
+                Console.WriteLine("Current Room : {0}", Rooms[Location.Row, Location.Column]);
                 Console.Write(">");
-                command = move(Console.ReadLine().Trim());
-                string outputstring;
+                command = Tocommand(Console.ReadLine().Trim());
+                string outputstring = "";
                 switch (command)
                 {
                     case Commands.EAST:
-                        if (CurrentRoom > 0)
+                        if (Location.Column > 0)
                         {
-                            CurrentRoom--;
+                            Location.Column--;
                             outputstring = "You Moved to " + command + ".";
                         }
                         else
                         {
-                            outputstring = "You cannot move any further East";
+                            outputstring = "The Way is shut";
                         }
                         break;
                     case Commands.WEST:
-                        if (CurrentRoom < Rooms.Length - 1)
+                        if (Location.Column < (Rooms.Length / 3) - 1)
                         {
-                            CurrentRoom++;
+                            Location.Column++;
                             outputstring = "You Moved to " + command + ".";
                         }
                         else
@@ -53,12 +67,39 @@ namespace Zork
                             outputstring = "The Way is Shut";
                         }
                         break;
+                    case Commands.NORTH:
+                        if (Location.Row > 0)
+                        {
+                            Location.Row--;
+                            outputstring = "You Moved to " + command + ".";
+                        }
+                        else
+                        {
+                            outputstring = "The Way is shut";
+                        }
+                        break;
+                    case Commands.SOUTH:
+                        if (Location.Row < (Rooms.Length / 3) - 1)
+                        {
+                            Location.Row++;
+                            outputstring = "You Moved to " + command + ".";
+                        }
+                        else
+                        {
+                            outputstring = "The Way is Shut";
+                        }
+                        break;
+                    case Commands.QUIT:
+                        break;
                     default:
                         outputstring = "Unknown Command";
                         break;
                 }
                 Console.WriteLine(outputstring);
             }
+            Console.Write("Thank you for Playing!");
+            Console.ReadLine();
+
         }
     }
 }
