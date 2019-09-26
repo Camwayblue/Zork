@@ -10,8 +10,6 @@ namespace Zork
     class Program
     {
 
-        #region Data Members
-
         public class Room
         {
             private string mName;
@@ -53,17 +51,22 @@ namespace Zork
 
         private static void InitializationDescription()
         {
-            Rooms[0, 0].Description = "You are on a Rock-stream Trail.";
-            Rooms[0, 1].Description = "Your are facing the south side of the white house. There is no door here, and all the windows are barred.";
-            Rooms[0, 2].Description = "You are at the top of the Great canyon on its south wall.";
+            var roomMap = new Dictionary<string, Room>();
+            foreach (Room room in Rooms)
+            {
+                roomMap[room.Name] = room;
+            }
+            roomMap["Rocky Trail"].Description = "You are on a Rock-stream Trail.";
+            roomMap["South of House"].Description = "Your are facing the south side of the white house. There is no door here, and all the windows are barred.";
+            roomMap["Canyon View"].Description = "You are at the top of the Great canyon on its south wall.";
 
-            Rooms[1, 0].Description = "This is a forest, with trees in all direction around you.";
-            Rooms[1, 1].Description = "This is an open field west of a white house, with a boarded front door.";
-            Rooms[1, 2].Description = "You are behind the white house. In one corner of the house there is a small window which is slightly ajar.";
+            roomMap["Forest"].Description = "This is a forest, with trees in all direction around you.";
+            roomMap["West of House"].Description = "This is an open field west of a white house, with a boarded front door.";
+            roomMap["Behind House"].Description = "You are behind the white house. In one corner of the house there is a small window which is slightly ajar.";
 
-            Rooms[2, 0].Description = "This is a daily lit forest, with large trees all around. To the east, there apprears to be sunlight.";
-            Rooms[2, 1].Description = "You are facing the north side of a white house. There is no door here, and all the windows are barred.";
-            Rooms[2, 2].Description = "You are in a clearing, with a fores surrounding you on the west and south.";
+            roomMap["Dense Woods"].Description = "This is a daily lit forest, with large trees all around. To the east, there apprears to be sunlight.";
+            roomMap["North of House"].Description = "You are facing the north side of a white house. There is no door here, and all the windows are barred.";
+            roomMap["Clearing"].Description = "You are in a clearing, with a fores surrounding you on the west and south.";
         }
         private static class Location
         {
@@ -87,7 +90,6 @@ namespace Zork
                 return Rooms[Location.Row, Location.Column];
             }
         }
-        #endregion
 
         #region Functions
         private static bool IsDirection(Commands command)
@@ -153,12 +155,18 @@ namespace Zork
         {
             InitializationDescription();
             Console.WriteLine("Welcome to Zork!");
+            Room PreviewsRoom = null;
             Console.WriteLine("Player Spawned in Room : {0}", CurrentRoom.Name);
             Commands command = Commands.UNKNOWN;
             while (command != Commands.QUIT)
             {
                 string outputstring = "";
                 Console.WriteLine("Current Room : {0}", CurrentRoom.Name);
+                if (PreviewsRoom != CurrentRoom)
+                {
+                    Console.WriteLine(CurrentRoom.Description);
+                    PreviewsRoom = CurrentRoom;
+                }
                 Console.Write(">");
                 command = Tocommand(Console.ReadLine().Trim());
                 switch (command)
