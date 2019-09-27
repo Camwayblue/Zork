@@ -19,33 +19,8 @@ namespace Zork
             }
         }
 
-        #region Exception Handling
-        public static class Assert
-        {
-            [Conditional("DEBUG")]
-            public static void IsTrue(bool expression, string message = null)
-            {
-                if (expression == false)
-                {
-                    throw new Exception(message);
-                }
-            }
-        }
-        #endregion
-
         #region Data Members
         private static readonly Dictionary<string, Room> RoomMap;
-        public enum Commands
-        {
-            QUIT,
-            LOOK,
-            NORTH,
-            SOUTH,
-            EAST,
-            WEST,
-            UNKNOWN,
-            INVALID
-        }
 
         public class Room
         {
