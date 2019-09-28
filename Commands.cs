@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Zork
 {
-    enum Commands
+    public enum Commands
     {
         QUIT,
         LOOK,
@@ -15,4 +17,11 @@ namespace Zork
         UNKNOWN,
         INVALID
     }
+    /*public enum Directions
+    {
+        North,
+        South,
+        East,
+        West
+    }*/
 }
