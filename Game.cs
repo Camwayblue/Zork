@@ -22,46 +22,90 @@ namespace Zork
             World = world;
             Player = player;
         }
+
+        public Game()
+        {
+            Command[] commands =
+            {
+                new Command("LOOK", new string[] {"LOOK", "L" },
+                (game, commandContext) => Console.WriteLine(game.Player.Location.Description)),
+
+                new Command("QUIT", new string[] {"QUIT", "Q" },
+                (game, commandContext) => game.IsRunning = false),
+
+                new Command("NORTH", new string[] {"NORTH", "N" }, MovementCommands.North),
+                new Command("SOUTH", new string[] {"SOUTH", "S" }, MovementCommands.North),
+                new Command("EAST", new string[] {"EAST", "E" }, MovementCommands.North),
+                new Command("WEST", new string[] {"WEST", "W" }, MovementCommands.North),
+            };
+
+            CommandManager = new CommandManager(commands);
+        }
+
         public void Run()
         {
+            #region old run
+            /* IsRunning = true;
+             Room previousRoom = null;
+             while (IsRunning)
+             {
+                 Console.WriteLine(Player.Location);
+                 if (previousRoom != Player.Location)
+                 {
+                     Console.WriteLine(Player.Location.Description);
+                     previousRoom = Player.Location;
+                 }
+                 //}
+                 Console.Write("\n> ");
+                 Commands command = ToCommand(Console.ReadLine().Trim());
+
+                 switch (command)
+                 {
+                     case Commands.QUIT:
+                         IsRunning = false;
+                         break;
+
+                     case Commands.LOOK:
+                         Console.WriteLine(Player.Location.Description);
+                         break;
+
+                     case Commands.NORTH:
+                     case Commands.SOUTH:
+                     case Commands.EAST:
+                     case Commands.WEST:
+                         Directions direction = Enum.Parse<Directions>(command.ToString(), true);
+                         if (Player.Move(direction) == false)
+                         {
+                             Console.WriteLine("The way is shut!");
+                         }
+                         break;
+
+                     default:
+                         Console.WriteLine("Unknown command.");
+                         break;
+                 }
+             }*/
+            #endregion 
+
             IsRunning = true;
             Room previousRoom = null;
             while (IsRunning)
             {
                 Console.WriteLine(Player.Location);
-                if (previousRoom != Player.Location)
+                if(previousRoom != Player.Location)
                 {
-                    Console.WriteLine(Player.Location.Description);
+                    CommandManager.PerformCommand(this, "LOOK");
                     previousRoom = Player.Location;
                 }
-                //}
+
                 Console.Write("\n> ");
-                Commands command = ToCommand(Console.ReadLine().Trim());
-
-                switch (command)
+                if (CommandManager.PerformComman(this, Console.ReadLine().Trim()))
                 {
-                    case Commands.QUIT:
-                        IsRunning = false;
-                        break;
-
-                    case Commands.LOOK:
-                        Console.WriteLine(Player.Location.Description);
-                        break;
-
-                    case Commands.NORTH:
-                    case Commands.SOUTH:
-                    case Commands.EAST:
-                    case Commands.WEST:
-                        Directions direction = Enum.Parse<Directions>(command.ToString(), true);
-                        if (Player.Move(direction) == false)
-                        {
-                            Console.WriteLine("The way is shut!");
-                        }
-                        break;
-
-                    default:
-                        Console.WriteLine("Unknown command.");
-                        break;
+                    Player.Moves++;
+                }
+                else
+                {
+                    Console.WriteLine("That's not a verb i reconize.");
                 }
             }
         }
@@ -72,10 +116,12 @@ namespace Zork
 
             return game;
         }
-        private static Commands ToCommand(string commandString) => Enum.TryParse<Commands>(commandString, true, out Commands result) ? result : Commands.UNKNOWN;
+       // private static Commands ToCommand(string commandString) => Enum.TryParse<Commands>(commandString, true, out Commands result) ? result : Commands.UNKNOWN;
         /*{
             Commands result;
             return Enum.TryParse<Commands>(commandstring, true, out result) ? result : Commands.UNKNOWN;
         }*/
+
+  
     }
 }
